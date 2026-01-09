@@ -39,9 +39,6 @@ app.use(cors({
   credentials: true
 }))
 
-// 🔥 THIS LINE IS MANDATORY
-app.options("*", cors())
-
 
 // --- API ENDPOINTS ---
 app.use('/api/admin', adminRouter)
