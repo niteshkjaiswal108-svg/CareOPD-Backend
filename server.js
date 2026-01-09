@@ -22,6 +22,7 @@ app.use(express.json())
 // CORS setup: MUST come before routes
 const allowedOrigins = [
   "http://localhost:5173", // local dev
+  "http://localhost:5174",
   "https://careopd-frontend.vercel.app",
   "https://careopd-frontend-51k3ja705-niteshkjaiswal108-svgs-projects.vercel.app",
   "https://careopd-frontend-mk77k4ho9-niteshkjaiswal108-svgs-projects.vercel.app" // your latest deployment
