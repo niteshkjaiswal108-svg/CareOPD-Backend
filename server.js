@@ -17,28 +17,31 @@ connectCloudinary()
 // --- MIDDLEWARES ---
 
 // Parse JSON
-app.use(express.json())
-
-// CORS setup: MUST come before routes
 const allowedOrigins = [
-  "http://localhost:5173", // local dev
+  "http://localhost:5173",
   "http://localhost:5174",
   "https://careopd-frontend.vercel.app",
   "https://careopd-frontend-51k3ja705-niteshkjaiswal108-svgs-projects.vercel.app",
-  "https://careopd-frontend-mk77k4ho9-niteshkjaiswal108-svgs-projects.vercel.app" // your latest deployment
+  "https://careopd-frontend-mk77k4ho9-niteshkjaiswal108-svgs-projects.vercel.app",
+  "https://care-opd-admin-723u.vercel.app"
 ]
 
 app.use(cors({
-  origin: function(origin, callback){
-    if(!origin) return callback(null, true) // allow Postman / server-to-server
-    if(allowedOrigins.indexOf(origin) === -1){
-      const msg = `The CORS policy for this site does not allow access from the specified Origin.`
-      return callback(new Error(msg), false)
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true)
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true)
     }
-    return callback(null, true)
+    return callback(new Error("Not allowed by CORS"))
   },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }))
+
+// 🔥 THIS LINE IS MANDATORY
+app.options("*", cors())
+
 
 // --- API ENDPOINTS ---
 app.use('/api/admin', adminRouter)
