@@ -17,27 +17,12 @@ connectCloudinary()
 // --- MIDDLEWARES ---
 
 // Parse JSON
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "https://careopd-frontend.vercel.app",
-  "https://careopd-frontend-51k3ja705-niteshkjaiswal108-svgs-projects.vercel.app",
-  "https://careopd-frontend-mk77k4ho9-niteshkjaiswal108-svgs-projects.vercel.app",
-  "https://care-opd-admin-723u.vercel.app"
-]
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true)
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true)
-    }
-    return callback(new Error("Not allowed by CORS"))
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  origin: true,
   credentials: true
 }))
+  
+  app.use(express.json());
 
 
 // --- API ENDPOINTS ---

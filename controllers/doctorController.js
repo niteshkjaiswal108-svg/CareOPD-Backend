@@ -52,7 +52,7 @@ const loginDoctor = async (req, res) => {
 const appointmentsDoctor = async (req, res) => {
   try {
     // Use the ID from auth middleware
-    const docId = req.docId.id;
+    const docId = req.docId;
 
     if (!docId) {
       return res.status(400).json({ success: false, message: "Doctor ID missing" });
@@ -106,7 +106,7 @@ const appointmentCancel = async (req, res) => {
 
 const doctorDashboard = async (req, res) => {
   try {
-    const docId = req.docId.id; // ✅ FIX
+    const docId = req.docId; // ✅ FIX
 
     const appointments = await appointmentModel.find({ docId });
 
@@ -140,5 +140,48 @@ const doctorDashboard = async (req, res) => {
   }
 };
 
+// API to get doctor profile for doctor panel
 
-export { changeAvailablity, doctorList, loginDoctor, appointmentsDoctor, appointmentCancel, appointmentComplete, doctorDashboard }
+const doctorProfile = async (req, res) => {
+  try {
+    const docId = req.docId;
+    const doctor = await doctorModel.findById(docId).select("-password");
+
+    res.json({
+      success: true,
+      data: doctor, // ✅ unified key
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+// API to update doctor profile data from doctor panel
+
+const updateDoctorProfile = async (req, res) => {
+  try {
+    const docId = req.docId; // ✅ FIXED
+    const { fees, address, available, about } = req.body;
+
+    const updatedDoctor = await doctorModel.findByIdAndUpdate(
+      docId,
+      { fees, address, available, about },
+      { new: true }
+    ).select("-password");
+
+    res.json({
+      success: true,
+      message: "Profile Updated",
+      data: updatedDoctor, // ✅ SAME KEY
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+
+export { changeAvailablity, doctorList, loginDoctor, appointmentsDoctor, appointmentCancel, appointmentComplete, doctorDashboard, doctorProfile, updateDoctorProfile }

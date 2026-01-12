@@ -13,7 +13,7 @@ const authDoctor = (req, res, next) => {
     const dtoken = authHeader.split(' ')[1]
     const decoded = jwt.verify(dtoken, process.env.JWT_SECRET)
 
-    req.docId = { id: decoded.id } // 👈 this MUST exist
+    req.docId = decoded.id; // 👈 this MUST exist
     next()
   } catch (error) {
     return res.status(401).json({ success: false, message: 'Invalid token' })
